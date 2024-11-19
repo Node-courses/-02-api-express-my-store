@@ -16,28 +16,32 @@ productsRouter.get("/", (req, res) => {
     });
   }
 
-  res.json({
+  res.status(200).json({
     limit,
     products,
   });
 });
 
 productsRouter.get("/filter", (req, res) => {
-  res.send("Proximamente filtrando productos");
+  res.status(200).send("Proximamente filtrando productos");
 });
 
 productsRouter.get("/:id", (req, res) => {
   const { id } = req.params;
-  res.json({
-    id,
-    name: `Product ${id}`,
-    price: 1000,
-  });
+  if (Number(id) === 999) {
+    res.status(404).json({ message: "Producto no encontrado" });
+  } else {
+    res.status(200).json({
+      id,
+      name: `Product ${id}`,
+      price: 1000,
+    });
+  }
 });
 
 productsRouter.post("/", (req, res) => {
   const body = req.body;
-  res.json({
+  res.status(201).json({
     message: "Producto creado",
     product: body,
   });
@@ -46,7 +50,7 @@ productsRouter.post("/", (req, res) => {
 productsRouter.put("/:id", (req, res) => {
   const { id } = req.params;
   const body = req.body;
-  res.json({
+  res.status(200).json({
     message: "Producto actualizado",
     product: { id, ...body },
   });
@@ -55,7 +59,7 @@ productsRouter.put("/:id", (req, res) => {
 productsRouter.patch("/:id", (req, res) => {
   const { name } = req.body;
   const { id } = req.params;
-  res.json({
+  res.status(200).json({
     message: "Producto actualizado parcialmente",
     product: { id, name },
   });
@@ -63,5 +67,5 @@ productsRouter.patch("/:id", (req, res) => {
 
 productsRouter.delete("/:id", (req, res) => {
   const { id } = req.params;
-  res.json({ message: `Producto ${id} eliminado` });
+  res.status(200).json({ message: `Producto ${id} eliminado` });
 });
